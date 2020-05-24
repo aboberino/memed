@@ -2,20 +2,17 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule }   from '@angular/forms';
 import { HttpClientModule }   from '@angular/common/http';
-
 import { AppRoutingModule } from './app-routing.module';
+
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './components/header/header.component';
-import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './components/home/home.component';
 import { MemeComponent } from './components/meme/meme.component';
-import { UserService } from './service/user.service';
+import { CoreModule } from './core/core.module';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
-    FooterComponent,
     HomeComponent,
     MemeComponent
   ],
@@ -23,11 +20,10 @@ import { UserService } from './service/user.service';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    CoreModule
   ],
-  providers: [
-    UserService
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
