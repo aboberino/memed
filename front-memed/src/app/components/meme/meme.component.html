@@ -1,0 +1,55 @@
+<section class="hero is-primary is-bold">
+    <div class="hero-body">
+        <div class="container">
+
+            <h1 class="title">Add new meme!</h1>
+
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+
+        <form (ngSubmit)="submitForm()" #memeForm="ngForm">
+
+            <!-- name -->
+            <div class="field">
+                <label class="label">Name</label>
+                <input type="text" name="name" class="input" placeholder="Name" [(ngModel)]="name" #nameInput="ngModel"
+                    required>
+
+                <div class="help is-danger" *ngIf="nameInput.invalid && nameInput.touched">
+                    Your name is requiered.
+                </div>
+            </div>
+
+            <!-- email -->
+            <div class="field">
+                <label class="label">Email</label>
+                <input type="email" name="email" class="input" placeholder="Your Email" [(ngModel)]="email" #emailInput="ngModel"
+                    email required>
+
+                <div class="help is-danger" *ngIf="emailInput.invalid && emailInput.touched">
+                    Your email is requiered.
+                </div>
+            </div>
+
+            <!-- message -->
+            <div class="field">
+                <label class="label">Message</label>
+                <textarea class="textarea" name="message" placeholder="What's on your mind?" [(ngModel)]="message"
+                    #messageInput="ngModel" required></textarea>
+
+                <div class="help is-danger" *ngIf="messageInput.invalid && messageInput.touched">
+                    Your message is requiered.
+                </div>
+
+            </div>
+
+            <button type="submit" class="button is-danger is-large" [disabled]="memeForm.invalid">Submit</button>
+
+        </form>
+
+    </div>
+</section>
