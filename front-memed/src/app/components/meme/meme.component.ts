@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MemeService } from 'src/app/core/service/meme.service';
 import { Meme } from 'src/app/model/meme';
+import { ImgbbService } from 'src/app/core/service/imgbb.service';
 
 class ImageSnippet {
-  constructor(public src: string, public file: File) {}
+  constructor(public src: string, public file: File) { }
 }
 
 @Component({
@@ -21,36 +22,58 @@ export class MemeComponent implements OnInit {
   selectedFileName: String = "Upload file…";
   convertedFile: String;
 
-  apiKeyImgbb: "50a47bf2128effb2b260b348afce1d42";
+  returnedObject: any;
 
-  constructor(private memeService: MemeService) { }
-
-  ngOnInit() {}
-
-  submitForm() {
-    if (this.selectedFile == null){
-      alert("You need to select a file.");
+  constructor(private memeService: MemeService, private imgbbService: ImgbbService) {
+    this.newMeme = {
+      id: null,
+      name: null,
+      image: null,
+      link: null,
+      tags: null
     }
-    else{
-      const alertMessage = `Name: ${this.name} \nTags: ${this.tags}`;
-      alert(alertMessage);
-      this.newMeme.image = this.convertedFile;
-      this.memeService.createMeme(this.newMeme).subscribe(res => {
-        console.log(res);
-        alert("New meme created with success");
-      });
-    }
-    
   }
 
-  onFileChanged(imageInput: any){
+  ngOnInit() { }
+
+  submitForm() {
+    if (this.selectedFile == null) {
+      alert("You need to select a file.");
+    }
+    else {
+      this.newMeme.image = this.convertedFile;
+
+      const formData = new FormData();
+      formData.append('image', this.newMeme.image);
+
+
+
+      this.imgbbService.uploadImage(formData).subscribe(
+        (res) => { 
+          console.log(res); 
+          this.returnedObject = res;
+          this.returnedObject.data.url;
+          this.newMeme.link = this.returnedObject.data.url;
+          
+          this.memeService.createMeme(this.newMeme).subscribe(res => {
+            alert("New meme created with success");
+            window.location.reload();
+          });
+        },
+        (err) => console.log(err)
+      );
+    }
+
+  }
+
+  onFileChanged(imageInput: any) {
     const file: File = imageInput.files[0];
     const reader = new FileReader();
-    
+
     reader.addEventListener('load', (event: any) => {
       this.selectedFile = new ImageSnippet(event.target.result, file);
       this.selectedFileName = this.selectedFile.file.name;
-      this.convertedFile = event.target.result.replace('data:' + this.selectedFile.file.type + ';base64,','');
+      this.convertedFile = event.target.result.replace('data:' + this.selectedFile.file.type + ';base64,', '');
     });
     reader.readAsDataURL(file);
   }
