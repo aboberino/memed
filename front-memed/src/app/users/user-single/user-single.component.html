@@ -1,8 +1,10 @@
 <section class="section">
     <div class="container">
         <div class="card" *ngIf="user">
-            <img [src]="user.avatar_url" alt="">
-            <h2>{{ user.login }}</h2>
+            <figure class="image is-128x128">
+                <img class="is-rounded" [src]="user[0].avatar_url" alt="{{ user[0].username }}'s avatar">
+            </figure>
+            <h2>{{ user[0].username }}</h2>
         </div>
     </div>
 </section>

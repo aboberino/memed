@@ -18,7 +18,8 @@ router.get('/', function (req, res) {
 
 router.get('/:username', function (req, res) {
     const username = req.params.username;
-
+    console.log(username);
+    
     User.getUser(username, function(err,rows){
         if(err) {
             res.status(400).json(err);

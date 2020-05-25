@@ -7,7 +7,3 @@ var server = app.listen(port, function() {
     console.log(all_routes(app));
 });
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    next();
-});

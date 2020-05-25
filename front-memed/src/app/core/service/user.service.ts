@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 export class UserService {
 
   // URL = 'https://api.github.com/users';
-  URL = 'localhost:4242/api/user';
+  URL = 'http://localhost:4242/api/user';
 
   constructor(private http: HttpClient) { }
 
