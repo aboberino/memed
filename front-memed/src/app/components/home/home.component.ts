@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MemeService } from 'src/app/core/service/meme.service';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  memes: any;
+
+  constructor(private memeService: MemeService) { }
 
   ngOnInit() {
+    this.memes = this.memeService.getMemes();
   }
 
 }

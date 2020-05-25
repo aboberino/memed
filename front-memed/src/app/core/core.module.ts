@@ -4,6 +4,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { UserService } from './service/user.service';
 import { RouterModule } from '@angular/router';
+import { MemeService } from './service/meme.service';
 
 
 
@@ -21,7 +22,8 @@ import { RouterModule } from '@angular/router';
     FooterComponent
   ],
   providers: [
-    UserService
+    UserService,
+    MemeService
   ]
 })
 export class CoreModule { }
