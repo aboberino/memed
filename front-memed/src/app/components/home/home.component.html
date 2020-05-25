@@ -7,12 +7,22 @@
         </div>
     </div>
 </section> -->
+
+<section class="hero is-info is-bold">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">BIENVENUE SUR MEMED</h1>
+        </div>
+    </div>
+</section>
+
 <section class="section">
     <div class="container" *ngIf="memes">
-        <div class="card" *ngFor="let meme of memes | async">
+        <div class="card" *ngFor="let meme of memes"> <!-- | async -->
             <div class="card-image">
                 <figure class="image is-256x256">
-                    <img src="http://via.placeholder.com/256x256" alt="Placeholder image">
+                    <img [src]="meme.link" alt="Rare image of beautifull {{ meme.name }}">
+                    <!-- http://via.placeholder.com/256x256 -->
                 </figure>
             </div>
             <div class="card-content">
@@ -24,10 +34,9 @@
                 </div>
 
                 <div class="content">
-                    Tags : {{ meme.tags }}
-                    <a href="#">#css</a> <a href="#">#responsive</a>
+                    Tags : <a href="#">#{{ meme.tags }}</a>
                     <br>
-                    <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                    <time datetime="2016-1-1">1 Jan 2016</time>
                 </div>
             </div>
         </div>
