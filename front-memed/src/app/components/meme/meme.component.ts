@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MemeService } from 'src/app/core/service/meme.service';
+import { Meme } from 'src/app/model/meme';
+
+class ImageSnippet {
+  constructor(public src: string, public file: File) {}
+}
 
 @Component({
   selector: 'app-meme',
@@ -7,18 +13,46 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MemeComponent implements OnInit {
 
-  name: string;
-  email: string;
-  message: string;
+  newMeme: Meme;
+  name: String;
+  tags: String;
 
-  constructor() { }
+  selectedFile: any;
+  selectedFileName: String = "Upload file…";
+  convertedFile: String;
 
-  ngOnInit() {
-  }
+  apiKeyImgbb: "50a47bf2128effb2b260b348afce1d42";
+
+  constructor(private memeService: MemeService) { }
+
+  ngOnInit() {}
 
   submitForm() {
-    const alertMessage = `Name: ${this.name} \nEmail: ${this.email} \nMessage: ${this.message}`;
-    alert(alertMessage);
+    if (this.selectedFile == null){
+      alert("You need to select a file.");
+    }
+    else{
+      const alertMessage = `Name: ${this.name} \nTags: ${this.tags}`;
+      alert(alertMessage);
+      this.newMeme.image = this.convertedFile;
+      this.memeService.createMeme(this.newMeme).subscribe(res => {
+        console.log(res);
+        alert("New meme created with success");
+      });
+    }
+    
+  }
+
+  onFileChanged(imageInput: any){
+    const file: File = imageInput.files[0];
+    const reader = new FileReader();
+    
+    reader.addEventListener('load', (event: any) => {
+      this.selectedFile = new ImageSnippet(event.target.result, file);
+      this.selectedFileName = this.selectedFile.file.name;
+      this.convertedFile = event.target.result.replace('data:' + this.selectedFile.file.type + ';base64,','');
+    });
+    reader.readAsDataURL(file);
   }
 
 }

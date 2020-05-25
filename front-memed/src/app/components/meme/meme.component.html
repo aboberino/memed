@@ -1,9 +1,7 @@
 <section class="hero is-primary is-bold">
     <div class="hero-body">
         <div class="container">
-
             <h1 class="title">Add new meme!</h1>
-
         </div>
     </div>
 </section>
@@ -13,41 +11,57 @@
 
         <form (ngSubmit)="submitForm()" #memeForm="ngForm">
 
-            <!-- name -->
+            <!-- Name -->
             <div class="field">
-                <label class="label">Name</label>
-                <input type="text" name="name" class="input" placeholder="Name" [(ngModel)]="name" #nameInput="ngModel"
+                <label class="label">Meme Name</label>
+                <input type="text" name="name" class="input" placeholder="Name" [(ngModel)]="newMeme.name" #nameInput="ngModel"
                     required>
 
                 <div class="help is-danger" *ngIf="nameInput.invalid && nameInput.touched">
-                    Your name is requiered.
+                    Meme name is requiered.
                 </div>
             </div>
 
-            <!-- email -->
+            <!-- Tags -->
             <div class="field">
-                <label class="label">Email</label>
-                <input type="email" name="email" class="input" placeholder="Your Email" [(ngModel)]="email" #emailInput="ngModel"
-                    email required>
+                <label class="label">Tags</label>
+                <textarea class="textarea" name="tags" placeholder="Add tags to describe your image?" [(ngModel)]="newMeme.tags"
+                    #tagsInput="ngModel" required></textarea>
 
-                <div class="help is-danger" *ngIf="emailInput.invalid && emailInput.touched">
-                    Your email is requiered.
+                <div class="help is-danger" *ngIf="tagsInput.invalid && tagsInput.touched">
+                    Tags are requiered.
                 </div>
+
             </div>
 
-            <!-- message -->
+            <!-- File-input -->
             <div class="field">
-                <label class="label">Message</label>
-                <textarea class="textarea" name="message" placeholder="What's on your mind?" [(ngModel)]="message"
-                    #messageInput="ngModel" required></textarea>
-
-                <div class="help is-danger" *ngIf="messageInput.invalid && messageInput.touched">
-                    Your message is requiered.
+                <div class="file is-primary is-boxed">
+                    <label class="file-label">
+                        <input #imageInput
+                        class="file-input" 
+                        type="file"
+                        (change)="onFileChanged(imageInput)"
+                        accept="image/*">
+                        <span class="file-cta">
+                            <span class="file-icon">
+                                <i class="fa fa-upload"></i>
+                            </span>
+                            <span class="file-label">
+                                {{ selectedFileName }}
+                            </span>
+                        </span>
+                    </label>
                 </div>
 
+                <div class="help is-danger" *ngIf="imageInput.invalid">
+                    File is requiered.
+                </div>
             </div>
 
-            <button type="submit" class="button is-danger is-large" [disabled]="memeForm.invalid">Submit</button>
+            <!-- Button submit -->
+            <button type="submit" class="button is-link" [disabled]="memeForm.invalid">Submit</button>
+            <!-- <button type="submit" class="button is-link is-loading" [disabled]="memeForm.invalid">Submit</button> -->
 
         </form>
 
