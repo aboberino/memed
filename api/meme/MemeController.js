@@ -17,7 +17,7 @@ router.get('/', function (req, res) {
 });
 
 router.post('/', function (req, res) {
-    Meme.creatematiere(req.body,function(err,count){
+    Meme.createMeme(req.body, function(err,count){
         if(err)
         {
             res.status(400).json(err);
