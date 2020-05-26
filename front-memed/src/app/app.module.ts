@@ -9,7 +9,7 @@ import { HomeComponent } from './components/home/home.component';
 import { MemeComponent } from './components/meme/meme.component';
 import { CoreModule } from './core/core.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     FormsModule,
     HttpClientModule,
     CoreModule,
-    NoopAnimationsModule
+    NoopAnimationsModule,
+    ClipboardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

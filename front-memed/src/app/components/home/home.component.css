@@ -4,7 +4,7 @@
     background-position: center center;
 } */
 
-.container{
+#container{
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
 	grid-gap: 0.5em;
@@ -12,4 +12,12 @@
 
 .card{
 	height: max-content;
+}
+
+.iconCopy :hover {
+	color: #1c1b1b;
+}
+
+.iconFav :hover {
+	color: #e83838;
 }
