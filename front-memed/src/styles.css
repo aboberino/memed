@@ -3,7 +3,13 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-.snackbar-stlye{
+/* Snack bar styles */
+.snackbar-success{
     background: #21d96a;
+    color: whitesmoke;
+}
+
+.snackbar-fail{
+    background: #e83838;
     color: whitesmoke;
 }

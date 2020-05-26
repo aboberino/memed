@@ -39,7 +39,12 @@ export class MemeComponent implements OnInit {
 
   submitForm() {
     if (this.selectedFile == null) {
-      this.snackBar.open("You need to select a file.", '(╯°□°)╯︵ ┻━┻', { duration: 3000, verticalPosition: 'top', horizontalPosition: 'end' });
+      this.snackBar.open("❌ You need to select a file.", '(╯°□°)╯︵ ┻━┻', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'end',
+        panelClass: ['snackbar-fail']
+      });
     }
     else {
       this.newMeme.image = this.convertedFile;
@@ -57,7 +62,12 @@ export class MemeComponent implements OnInit {
 
           // Appel vers l'api pour créer le meme
           this.memeService.createMeme(this.newMeme).subscribe(res => {
-            this.snackBar.open("Meme created", '👌', { duration: 3000, verticalPosition: 'top', horizontalPosition: 'end' });
+            this.snackBar.open("✔ Meme created", '', {
+              duration: 3000,
+              verticalPosition: 'top',
+              horizontalPosition: 'end',
+              panelClass: ['snackbar-succes']
+            });
             this.resetPage();
           });
         },
