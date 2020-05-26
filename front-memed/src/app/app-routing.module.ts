@@ -8,7 +8,7 @@ const routes: Routes = [
   { path: '', pathMatch: 'full', component: HomeComponent},
   { path: 'meme', component: MemeComponent},
   // Lazy loading users module
-  { path: 'users', loadChildren: './users/users.module#UsersModule'},
+  { path: 'users', loadChildren: () => import('./users/users.module').then(m => m.UsersModule)},
 
   // Retour vers home
   { path: '**', redirectTo: '' }
