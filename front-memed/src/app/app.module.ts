@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { MemeComponent } from './components/meme/meme.component';
 import { CoreModule } from './core/core.module';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { CoreModule } from './core/core.module';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    CoreModule
+    CoreModule,
+    NoopAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

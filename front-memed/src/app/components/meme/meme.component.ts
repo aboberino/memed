@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MemeService } from 'src/app/core/service/meme.service';
 import { Meme } from 'src/app/model/meme';
 import { ImgbbService } from 'src/app/core/service/imgbb.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 class ImageSnippet {
   constructor(public src: string, public file: File) { }
@@ -24,7 +25,11 @@ export class MemeComponent implements OnInit {
 
   returnedObject: any;
 
-  constructor(private memeService: MemeService, private imgbbService: ImgbbService) {
+  constructor(
+    private memeService: MemeService,
+    private imgbbService: ImgbbService,
+    private snackBar: MatSnackBar
+  ) {
     this.newMeme = {
       id: null,
       name: null,
@@ -38,7 +43,7 @@ export class MemeComponent implements OnInit {
 
   submitForm() {
     if (this.selectedFile == null) {
-      alert("You need to select a file.");
+      this.snackBar.open("You need to select a file.", '(╯°□°)╯︵ ┻━┻', { duration: 3000, verticalPosition: 'top', horizontalPosition: 'end' });
     }
     else {
       this.newMeme.image = this.convertedFile;
@@ -49,14 +54,14 @@ export class MemeComponent implements OnInit {
 
 
       this.imgbbService.uploadImage(formData).subscribe(
-        (res) => { 
-          console.log(res); 
+        (res) => {
+          console.log(res);
           this.returnedObject = res;
           this.returnedObject.data.url;
           this.newMeme.link = this.returnedObject.data.url;
-          
+
           this.memeService.createMeme(this.newMeme).subscribe(res => {
-            alert("New meme created with success");
+            this.snackBar.open("Meme created", '👌', { duration: 3000, verticalPosition: 'top', horizontalPosition: 'end' });
             window.location.reload();
           });
         },

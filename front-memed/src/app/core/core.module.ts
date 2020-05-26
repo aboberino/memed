@@ -5,6 +5,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { UserService } from './service/user.service';
 import { RouterModule } from '@angular/router';
 import { MemeService } from './service/meme.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 
@@ -15,11 +16,13 @@ import { MemeService } from './service/meme.service';
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    MatSnackBarModule
   ],
   exports: [
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    MatSnackBarModule
   ],
   providers: [
     UserService,
