@@ -16,13 +16,9 @@ class ImageSnippet {
 export class MemeComponent implements OnInit {
 
   newMeme: Meme;
-  name: String;
-  tags: String;
-
   selectedFile: any;
   selectedFileName: String = "Upload file…";
   convertedFile: String;
-
   returnedObject: any;
 
   constructor(
@@ -51,8 +47,7 @@ export class MemeComponent implements OnInit {
       const formData = new FormData();
       formData.append('image', this.newMeme.image);
 
-
-
+      // Appel vers l'api de imgbb pour uploader l'image selectionnée
       this.imgbbService.uploadImage(formData).subscribe(
         (res) => {
           console.log(res);
@@ -60,9 +55,10 @@ export class MemeComponent implements OnInit {
           this.returnedObject.data.url;
           this.newMeme.link = this.returnedObject.data.url;
 
+          // Appel vers l'api pour créer le meme
           this.memeService.createMeme(this.newMeme).subscribe(res => {
             this.snackBar.open("Meme created", '👌', { duration: 3000, verticalPosition: 'top', horizontalPosition: 'end' });
-            window.location.reload();
+            this.resetPage();
           });
         },
         (err) => console.log(err)
@@ -83,4 +79,17 @@ export class MemeComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
+  resetPage() {
+    this.newMeme = {
+      id: null,
+      name: null,
+      image: null,
+      link: null,
+      tags: null
+    }
+    this.selectedFile = null;
+    this.selectedFileName = "Upload file…";
+    this.convertedFile = null;
+    this.returnedObject = null;
+  }
 }
