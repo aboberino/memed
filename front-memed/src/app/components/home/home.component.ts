@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MemeService } from 'src/app/core/service/meme.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PagerService } from 'src/app/core/service/pager.service';
 
 @Component({
   selector: 'app-home',
@@ -9,15 +10,25 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class HomeComponent implements OnInit {
 
-  memes: any;
+  private memes: any;
+  // array of all items to be paged
+  private allItems: any;
+  // pager object
+  pager: any = {};
+  // paged items
+  pagedItems: any[];
 
   constructor(
     private memeService: MemeService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private pagerService: PagerService
   ) { }
 
   ngOnInit() {
-    this.memes = this.memeService.getMemes();
+    this.memeService.getMemes().subscribe(data => {
+      this.memes = data;
+      this.setPage(1);
+    });
   }
 
   copyLink() {
@@ -29,4 +40,10 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  setPage(page: number) {
+    // get pager object from service
+    this.pager = this.pagerService.getPager(this.memes.length, page);
+    // get current page of items
+    this.pagedItems = this.memes.slice(this.pager.startIndex, this.pager.endIndex + 1);
+  }
 }

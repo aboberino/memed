@@ -21,3 +21,7 @@
 .iconFav :hover {
 	color: #e83838;
 }
+
+#pagination {
+	padding-top: 20px;
+}

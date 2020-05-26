@@ -16,53 +16,73 @@
     </div>
 </section>
 
-<!-- <section class="hero is-primary is-bold">
-    <div class="hero-body">
-        <div class="container">
-            <h1 class="title">Add new meme!</h1>
-        </div>
-    </div>
-</section> -->
-
 <section class="section">
-    <div class="container" id="container" *ngIf="memes">
-        <!-- Card -->
-        <div class="card" *ngFor="let meme of memes | async">
-            <!-- Card Image -->
-            <div class="card-image">
-                <figure class="image is-256x256">
-                    <img [src]="meme.link" alt="Rare image of beautifull {{ meme.name }}">
-                    <!-- http://via.placeholder.com/256x256 -->
-                </figure>
-            </div>
-            <!-- Card Content -->
-            <div class="card-content">
-                <div class="media">
-                    <div class="media-content">
-                        <p class="title is-4">{{ meme.name }}</p>
-                        <p class="subtitle is-6">@Bob</p>
+    <div class="container" >
+        <div id="container" *ngIf="pagedItems">
+
+            <!-- Card -->
+            <div class="card" *ngFor="let meme of pagedItems">
+                <!-- Card Image -->
+                <div class="card-image">
+                    <figure class="image is-256x256">
+                        <img [src]="meme.link" alt="Rare image of beautifull {{ meme.name }}">
+                        <!-- http://via.placeholder.com/256x256 -->
+                    </figure>
+                </div>
+                <!-- Card Content -->
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-content">
+                            <p class="title is-4">{{ meme.name }}</p>
+                            <p class="subtitle is-6">@Bob</p>
+                        </div>
+                    </div>
+
+                    <div class="content">
+                        Tags : <a href="#">#{{ meme.tags }}</a>
+                        <br>
+                        <time datetime="2020-1-1">1 Jan 2020</time>
                     </div>
                 </div>
-
-                <div class="content">
-                    Tags : <a href="#">#{{ meme.tags }}</a>
-                    <br>
-                    <time datetime="2020-1-1">1 Jan 2020</time>
-                </div>
+                <!-- Footer -->
+                <footer class="card-footer">
+                    <p class="card-footer-item">
+                        <a class="iconCopy" ngxClipboard [cbContent]="meme.link" (click)="copyLink()" title="Copy link">
+                            <i class="fa fa-clipboard"></i>
+                        </a>
+                    </p>
+                    <p class="card-footer-item">
+                        <a class="iconFav" title="Add to favorite">
+                            <i class="fa fa-heart"></i>
+                        </a>
+                    </p>
+                </footer>
             </div>
-            <!-- Footer -->
-            <footer class="card-footer">
-                <p class="card-footer-item">
-                    <a class="iconCopy" ngxClipboard [cbContent]="meme.link" (click)="copyLink()" title="Copy link">
-                        <i class="fa fa-clipboard"></i>
-                    </a>
-                </p>
-                <p class="card-footer-item">
-                    <a class="iconFav" title="Add to favorite">
-                        <i class="fa fa-heart"></i>
-                    </a>
-                </p>
-            </footer>
+
         </div>
+
+        <!-- Pagination -->
+        <nav id="pagination" class="pagination is-centered" role="navigation" aria-label="pagination">
+            <ul *ngIf="pager.pages && pager.pages.length" class="pagination-list">
+                <li [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a (click)="setPage(1)" class="pagination-previous">Previous</a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a (click)="setPage(1)" class="pagination-link" aria-label="Goto page 1">1</a>
+                </li>
+                <li><span class="pagination-ellipsis">&hellip;</span></li>
+                <li *ngFor="let page of pager.pages">
+                    <a (click)="setPage(page)" [ngClass]="{'pagination-link': true, 'is-current':pager.currentPage === page}" aria-label="page" aria-current="page">{{page}}</a> <!-- is-current -->
+                </li>
+                <li><span class="pagination-ellipsis">&hellip;</span></li>
+                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a (click)="setPage(pager.totalPages)" class="pagination-link" aria-label="Goto page 86">{{pager.totalPages}}</a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a (click)="setPage(pager.currentPage + 1)" class="pagination-next">Next</a>
+                </li>
+            </ul>
+        </nav>
+
     </div>
 </section>
