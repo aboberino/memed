@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MemeService } from 'src/app/core/service/meme.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PagerService } from 'src/app/core/service/pager.service';
+// import { PagerService } from 'src/app/core/service/pager.service';
 
 @Component({
   selector: 'app-home',
@@ -11,23 +11,26 @@ import { PagerService } from 'src/app/core/service/pager.service';
 export class HomeComponent implements OnInit {
 
   private memes: any;
+  memesCopy: any;
   // array of all items to be paged
-  private allItems: any;
+  // private allItems: any;
   // pager object
-  pager: any = {};
+  // pager: any = {};
   // paged items
-  pagedItems: any[];
+  // pagedItems: any[];
 
   constructor(
     private memeService: MemeService,
     private snackBar: MatSnackBar,
-    private pagerService: PagerService
+    // private pagerService: PagerService
   ) { }
 
   ngOnInit() {
+    this.memesCopy = [];
     this.memeService.getMemes().subscribe(data => {
       this.memes = data;
-      this.setPage(1);
+      this.assignCopyList()
+      // this.setPage(1);
     });
   }
 
@@ -36,14 +39,30 @@ export class HomeComponent implements OnInit {
       duration: 3000,
       verticalPosition: 'top',
       horizontalPosition: 'end',
-      panelClass: ['snackbar-stlye']
+      panelClass: ['snackbar-success']
     });
   }
 
-  setPage(page: number) {
-    // get pager object from service
-    this.pager = this.pagerService.getPager(this.memes.length, page);
-    // get current page of items
-    this.pagedItems = this.memes.slice(this.pager.startIndex, this.pager.endIndex + 1);
+  assignCopyList(){
+    this.memesCopy = Object.assign([], this.memes);
   }
+
+  getMemes(event) {
+    const val = event.target.value;
+    this.assignCopyList();
+
+    if (val && val.trim() != ''){
+      this.memesCopy = this.memesCopy.filter(meme => {
+        let memeName = meme.name;
+        return (memeName.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      });
+    }
+  }
+
+  // setPage(page: number) {
+  //   // get pager object from service
+  //   this.pager = this.pagerService.getPager(this.memes.length, page);    
+  //   // get current page of items
+  //   this.memesCopy = this.memesCopy.slice(this.pager.startIndex, this.pager.endIndex + 1);
+  // }
 }

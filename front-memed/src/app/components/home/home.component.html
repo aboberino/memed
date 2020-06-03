@@ -17,15 +17,25 @@
 </section>
 
 <section class="section">
-    <div class="container" >
-        <div id="container" *ngIf="pagedItems">
+    <div class="container">
+        <div class="field is-grouped">
+            <p class="control is-expanded">
+                <input class="input" type="text" placeholder="Find a meme" (input)="getMemes($event)">
+            </p>
+            <p class="control">
+                <a class="button is-info">
+                    Search
+                </a>
+            </p>
+        </div>
+        <div id="container" *ngIf="memesCopy">
 
             <!-- Card -->
-            <div class="card" *ngFor="let meme of pagedItems">
+            <div class="card" *ngFor="let meme of memesCopy">
                 <!-- Card Image -->
                 <div class="card-image">
                     <figure class="image is-256x256">
-                        <img [src]="meme.link" alt="Rare image of beautifull {{ meme.name }}">
+                        <img [src]="meme.link" title="Rare image of beautifull {{ meme.name }}" alt="Rare image of beautifull {{ meme.name }}">
                         <!-- http://via.placeholder.com/256x256 -->
                     </figure>
                 </div>
@@ -62,7 +72,7 @@
         </div>
 
         <!-- Pagination -->
-        <nav id="pagination" class="pagination is-centered" role="navigation" aria-label="pagination">
+        <!-- <nav id="pagination" class="pagination is-centered" role="navigation" aria-label="pagination">
             <ul *ngIf="pager.pages && pager.pages.length" class="pagination-list">
                 <li [ngClass]="{disabled:pager.currentPage === 1}">
                     <a (click)="setPage(1)" class="pagination-previous">Previous</a>
@@ -72,7 +82,8 @@
                 </li>
                 <li><span class="pagination-ellipsis">&hellip;</span></li>
                 <li *ngFor="let page of pager.pages">
-                    <a (click)="setPage(page)" [ngClass]="{'pagination-link': true, 'is-current':pager.currentPage === page}" aria-label="page" aria-current="page">{{page}}</a> <!-- is-current -->
+                    <a (click)="setPage(page)" [ngClass]="{'pagination-link': true, 'is-current':pager.currentPage === page}"
+                        aria-label="page" aria-current="page">{{page}}</a>
                 </li>
                 <li><span class="pagination-ellipsis">&hellip;</span></li>
                 <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
@@ -82,7 +93,7 @@
                     <a (click)="setPage(pager.currentPage + 1)" class="pagination-next">Next</a>
                 </li>
             </ul>
-        </nav>
+        </nav> -->
 
     </div>
 </section>
