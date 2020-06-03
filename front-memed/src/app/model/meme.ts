@@ -4,4 +4,5 @@ export class Meme {
     image: any;
     link: String;
     tags: String;
+    date: Date;
 } 

@@ -3,6 +3,7 @@ import { MemeService } from 'src/app/core/service/meme.service';
 import { Meme } from 'src/app/model/meme';
 import { ImgbbService } from 'src/app/core/service/imgbb.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+declare var require: any;
 
 class ImageSnippet {
   constructor(public src: string, public file: File) { }
@@ -20,6 +21,7 @@ export class MemeComponent implements OnInit {
   selectedFileName: String = "Upload file…";
   convertedFile: String;
   returnedObject: any;
+  todayDate: Date;
 
   constructor(
     private memeService: MemeService,
@@ -31,7 +33,8 @@ export class MemeComponent implements OnInit {
       name: null,
       image: null,
       link: null,
-      tags: null
+      tags: null,
+      date: null
     }
   }
 
@@ -48,7 +51,11 @@ export class MemeComponent implements OnInit {
     }
     else {
       this.newMeme.image = this.convertedFile;
-
+      
+      let dateFormat = require('dateformat');
+      this.todayDate = dateFormat(new Date(), "yyyy-mm-dd");
+      this.newMeme.date = this.todayDate;
+      
       const formData = new FormData();
       formData.append('image', this.newMeme.image);
 
@@ -66,7 +73,7 @@ export class MemeComponent implements OnInit {
               duration: 3000,
               verticalPosition: 'top',
               horizontalPosition: 'end',
-              panelClass: ['snackbar-succes']
+              panelClass: ['snackbar-success']
             });
             this.resetPage();
           });
@@ -95,7 +102,8 @@ export class MemeComponent implements OnInit {
       name: null,
       image: null,
       link: null,
-      tags: null
+      tags: null,
+      date: null
     }
     this.selectedFile = null;
     this.selectedFileName = "Upload file…";

@@ -51,7 +51,7 @@
                     <div class="content">
                         Tags : <a href="#">#{{ meme.tags }}</a>
                         <br>
-                        <time datetime="2020-1-1">1 Jan 2020</time>
+                        <time>{{ meme.creation_date | date:'dd/MM/yyyy'}}</time>
                     </div>
                 </div>
                 <!-- Footer -->
