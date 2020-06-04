@@ -1,4 +1,4 @@
-var app = require('./config/app');
+var app = require('./router/app');
 var port = process.env.PORT || 4242;
 
 var server = app.listen(port, function() {
