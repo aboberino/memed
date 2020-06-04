@@ -3,22 +3,37 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 router.use(bodyParser.json());
 const config = require('../config/config');
+const verifySignUp = require('../router/verifySignUp');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 let User = require('../service/User');
 
-router.post('/signup', /*[verifySignUp.checkDuplicateUserNameOrEmail, verifySignUp.checkRolesExisted],*/ function (req, res) {
-    // signup
+router.post('/signup', [verifySignUp.checkDuplicateUserNameOrEmail], function (req, res) {
+    User.createUser({
+        username: req.body.username,
+        email: req.body.email,
+        password: bcrypt.hashSync(req.body.password, 8),
+        avatar_url: req.body.avatar_url
+    }, (err, rows) => {
+        if (err){
+            return res.status(500).send({ reason: err.message });
+        }
+        return res.send({ message: 'Registered successfully!' });
+    });
 });
 
-router.get('/signin', function (req, res) {
+router.post('/signin', function (req, res) {
 
     User.getUser(req.body.username, function (err, rows) {
+        let user = null;
 
         if (err) {
             return res.status(500).send({ reason: err.message });
         }
-        let user = rows[0];
+        
+        if (rows[0]){
+            user = rows[0];
+        }
 
         //check if user exist
         if (!user) {
