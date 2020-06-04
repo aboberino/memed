@@ -12,7 +12,11 @@ var User = {
     },
     createUser: function (User, callback) {
         return db.query('INSERT INTO user(username, password, email, avatar_url) values(?, ?, ?, ?)', [User.username, User.password, User.email, User.avatar_url], callback);
+    },
+    getRoleById: function (idRole, callback) {
+        return db.query(`SELECT * FROM role WHERE id='${idRole}'`, callback);
     }
+    
 }
 
 module.exports = User;

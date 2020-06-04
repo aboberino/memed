@@ -13,9 +13,10 @@ router.post('/signup', [verifySignUp.checkDuplicateUserNameOrEmail], function (r
         username: req.body.username,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
-        avatar_url: req.body.avatar_url
+        avatar_url: req.body.avatar_url,
+        id_role: 1
     }, (err, rows) => {
-        if (err){
+        if (err) {
             return res.status(500).send({ reason: err.message });
         }
         return res.send({ message: 'Registered successfully!' });
@@ -30,8 +31,8 @@ router.post('/signin', function (req, res) {
         if (err) {
             return res.status(500).send({ reason: err.message });
         }
-        
-        if (rows[0]){
+
+        if (rows[0]) {
             user = rows[0];
         }
 
@@ -52,18 +53,30 @@ router.post('/signin', function (req, res) {
         });
 
         // get user's role
-        let authorities = "ROLE_" + user.username.toUpperCase();
-        console.log(authorities);
+        User.getRoleById(user.id_role, (err, rows) => {
+            let role = null;
+            if (err) {
+                return res.status(500).send({ reason: err.message });
+            }
 
-        return res.status(200).send({
-            auth: true,
-            accessToken: token,
-            username: user.username,
-            authorities: authorities
+            if (rows[0]) {
+                role = rows[0];
+            }
+
+            if (!role){
+                return res.status(404).send({ reason: 'Role Not Found.' });
+            }
+
+            let authorities = role.name.toUpperCase();
+            return res.status(200).send({
+                auth: true,
+                accessToken: token,
+                username: user.username,
+                authorities: authorities
+            });
         });
+        
     });
 });
-
-
 
 module.exports = router;
