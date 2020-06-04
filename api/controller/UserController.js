@@ -2,10 +2,25 @@ var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
 router.use(bodyParser.json());
-var Meme = require('./Meme');
+var User = require('../service/User');
 
 router.get('/', function (req, res) {
-    Meme.getMemes(function(err,rows){
+    User.getUsers(function(err,rows){
+        if(err) {
+            res.status(400).json(err);
+        }
+        else
+        {
+            res.json(rows);
+        }
+    });
+});
+
+router.get('/:username', function (req, res) {
+    const username = req.params.username;
+    console.log(username);
+    
+    User.getUser(username, function(err,rows){
         if(err) {
             res.status(400).json(err);
         }
@@ -17,7 +32,7 @@ router.get('/', function (req, res) {
 });
 
 router.post('/', function (req, res) {
-    Meme.createMeme(req.body, function(err,count){
+    User.createUser(req.body,function(err,count){
         if(err)
         {
             res.status(400).json(err);
