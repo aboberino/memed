@@ -9,6 +9,7 @@ import { HomeComponent } from './components/home/home.component';
 import { MemeComponent } from './components/meme/meme.component';
 import { CoreModule } from './core/core.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { AuthModule } from './auth/auth.module';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     FormsModule,
     HttpClientModule,
     CoreModule,
-    NoopAnimationsModule
+    NoopAnimationsModule,
+    AuthModule
   ],
   providers: [],
   bootstrap: [AppComponent]

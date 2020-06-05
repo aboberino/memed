@@ -6,6 +6,8 @@ import { UserService } from './service/user.service';
 import { RouterModule } from '@angular/router';
 import { MemeService } from './service/meme.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { TokenStorageService } from './service/token-storage.service';
+import { AuthModule } from '../auth/auth.module';
 
 
 
@@ -17,7 +19,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   imports: [
     CommonModule,
     RouterModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    // AuthModule
   ],
   exports: [
     HeaderComponent,
@@ -26,7 +29,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   ],
   providers: [
     UserService,
-    MemeService
+    MemeService,
+    TokenStorageService
   ]
 })
 export class CoreModule { }

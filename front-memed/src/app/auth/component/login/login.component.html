@@ -1,0 +1,51 @@
+<div *ngIf="isLoggedIn; else loggedOut">
+    Logged in as {{role}}.
+</div>
+
+<ng-template #loggedOut>
+    <div class="container has-text-centered">
+        <div class="column is-4 is-offset-4">
+            <h3 class="title has-text-black">Login</h3>
+            <hr class="login-hr">
+            <p class="subtitle has-text-black">Please login to proceed.</p>
+            <div class="box">
+                <figure class="avatar">
+                    <img src="https://placehold.it/128x128">
+                </figure>
+                <form (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" name="username" placeholder="Username" [(ngModel)]="form.username"
+                                #username="ngModel" autofocus="" required>
+                        </div>
+                        <div *ngIf="f.submitted && username.invalid">
+                            <div *ngIf="username.errors.required">Username is required</div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" name="paswword" type="password" placeholder="Password" [(ngModel)]="form.password"
+                                #password="ngModel" required minlength="4">
+                            <div *ngIf="f.submitted && password.invalid">
+                                <div *ngIf="password.errors.required">Password is required</div>
+                                <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="button is-block is-info is-large is-fullwidth">Login <i class="fa fa-sign-in"
+                            aria-hidden="true"></i></button>
+                    <div *ngIf="f.submitted && isLoginFailed" class="alert alert-danger">
+                        Login failed: {{errorMessage}}
+                    </div>
+                </form>
+            </div>
+            <p class="has-text-grey">
+                <a href="../">Sign Up</a> &nbsp;·&nbsp;
+                <a href="../">Forgot Password</a> &nbsp;·&nbsp;
+                <a href="../">Need Help?</a>
+            </p>
+        </div>
+    </div>
+</ng-template>
