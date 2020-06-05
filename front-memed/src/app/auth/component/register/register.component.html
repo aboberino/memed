@@ -1,17 +1,14 @@
-<div *ngIf="isLoggedIn; else loggedOut">
-    Logged in as {{role}}.
+<div *ngIf="isSignedUp; else signupForm">
+    Your registration is successful. Please login!
 </div>
 
-<ng-template #loggedOut>
+<ng-template #signupForm>
     <div class="container has-text-centered">
         <div class="column is-4 is-offset-4">
-            <h3 class="title has-text-black">Login</h3>
+            <h3 class="title has-text-black">Sign up</h3>
             <hr class="login-hr">
-            <p class="subtitle has-text-black">Please login to proceed.</p>
+            <p class="subtitle has-text-black">Please sign up to login.</p>
             <div class="box">
-                <figure class="avatar">
-                    <img src="https://placehold.it/128x128">
-                </figure>
                 <form (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
                     <div class="field">
                         <div class="control">
@@ -25,8 +22,8 @@
 
                     <div class="field">
                         <div class="control">
-                            <input class="input is-large" name="paswword" type="password" placeholder="Password" [(ngModel)]="form.password"
-                                #password="ngModel" required minlength="4">
+                            <input class="input is-large" name="password" type="password" placeholder="Password"
+                                [(ngModel)]="form.password" #password="ngModel" required minlength="4">
                             <div *ngIf="f.submitted && password.invalid">
                                 <div *ngIf="password.errors.required">Password is required</div>
                                 <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
@@ -34,17 +31,27 @@
                         </div>
                     </div>
 
-                    <button class="button is-block is-info is-large is-fullwidth">Login <i class="fa fa-sign-in"
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" name="email" type="text" placeholder="Email" [(ngModel)]="form.email"
+                                #email="ngModel" required email>
+                            <div *ngIf="f.submitted && email.invalid">
+                                <div *ngIf="email.errors.required">Email is required</div>
+                                <div *ngIf="email.errors.email">Email must be a valid email address</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="button is-block is-info is-large is-fullwidth">Signup <i class="fa fa-sign-up"
                             aria-hidden="true"></i></button>
-                    <div *ngIf="f.submitted && isLoginFailed" class="alert alert-danger">
-                        Login failed: {{errorMessage}}
+                    <div *ngIf="f.submitted && isSignUpFailed" class="alert alert-danger">
+                        Signup failed: {{errorMessage}}
                     </div>
                 </form>
             </div>
             <p class="has-text-grey">
-                <a  routerLink="../signup">Sign Up</a> &nbsp;·&nbsp;
-                <a href="#">Forgot Password</a> &nbsp;·&nbsp;
-                <a href="#">Need Help?</a>
+                <a href="../">Forgot Password</a> &nbsp;·&nbsp;
+                <a href="../">Need Help?</a>
             </p>
         </div>
     </div>

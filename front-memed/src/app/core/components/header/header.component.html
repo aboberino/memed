@@ -10,10 +10,10 @@
     <!-- Menu -->
     <div class="navbar-menu">
         <div class="navbar-end">
-            <a class="navbar-item" routerLink="">Home</a>
-            <a class="navbar-item" routerLink="meme">Add Meme</a>
-            <a class="navbar-item" routerLink="users" *ngIf="authority === 'admin'">Users</a>
-            <a class="navbar-item" routerLink="auth/login" *ngIf="!authority">Login</a>
+            <a class="navbar-item" routerLink="" routerLinkActive="active">Home</a>
+            <a class="navbar-item" routerLink="meme" routerLinkActive="active">Add Meme</a>
+            <a class="navbar-item" routerLink="users" *ngIf="authority === 'admin'" routerLinkActive="active">Users</a>
+            <a class="navbar-item" routerLink="auth/login" *ngIf="!authority" routerLinkActive="active">Login</a>
             <a class="navbar-item" *ngIf="authority" (click)="logout()">Logout</a>
         </div>
     </div>

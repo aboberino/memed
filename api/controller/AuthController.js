@@ -67,7 +67,7 @@ router.post('/signin', function (req, res) {
                 return res.status(404).send({ reason: 'Role Not Found.' });
             }
 
-            let authorities = role.name.toUpperCase();
+            let authorities = "ROLE_" + role.name.toUpperCase();
             return res.status(200).send({
                 auth: true,
                 accessToken: token,

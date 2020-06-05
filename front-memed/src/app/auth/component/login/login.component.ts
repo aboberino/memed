@@ -18,16 +18,13 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthService, 
-    private tokenStorage: TokenStorageService
+    private tokenStorage: TokenStorageService,
     ) { }
 
   ngOnInit(): void {
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
       this.role = this.tokenStorage.getAuthorities();
-    }else{
-      console.log("nothing in storage");
-      
     }
   }
 
