@@ -1,6 +1,6 @@
 export class JwtResponse {
+    auth: boolean;
     accessToken: string;
-    type: string;
-    username: string;
+    user: { username: string, email: string, avatar_url: string};
     authorities: string;
 }

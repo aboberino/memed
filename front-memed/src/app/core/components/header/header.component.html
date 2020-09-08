@@ -5,16 +5,55 @@
         <a class="navbar-item" routerLink="">
             <img src="assets/img/icone.png">
         </a>
+
+        <a role="button" (click)="toggleNavbar()" #navBurger class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
     </div>
 
     <!-- Menu -->
-    <div class="navbar-menu">
-        <div class="navbar-end">
+    <div class="navbar-menu" #navMenu>
+        <div class="navbar-start">
             <a class="navbar-item" routerLink="" routerLinkActive="active">Home</a>
             <a class="navbar-item" routerLink="meme" routerLinkActive="active">Add Meme</a>
-            <a class="navbar-item" routerLink="users" *ngIf="authority === 'admin'" routerLinkActive="active">Users</a>
-            <a class="navbar-item" routerLink="auth/login" *ngIf="!authority" routerLinkActive="active">Login</a>
-            <a class="navbar-item" *ngIf="authority" (click)="logout()">Logout</a>
+            <a class="navbar-item" routerLink="users" routerLinkActive="active">Users</a>
+        </div>
+
+        <div class="navbar-end">
+            <a class="navbar-item" routerLink="/login" *ngIf="!isLoggedIn">Login</a>
+            <div class="buttons" *ngIf="!isLoggedIn">
+                <a href="" class="button is-primary" routerLink="/register"><strong>Sign up</strong></a>
+            </div>
+
+            <div class="navbar-item has-dropdown is-hoverable" *ngIf="isLoggedIn">
+                <a class="navbar-link">
+                    <figure class="image is-32x32">
+                        <img style="border-radius: 10%;"
+                            [src]="(currentUser | async)?.avatar_url ">
+                    </figure>
+                    <span>&nbsp;&nbsp;{{(currentUser | async)?.username }}</span>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    <a class="navbar-item" routerLink="/login" *ngIf="!isLoggedIn">
+                        <span class="icon"><i class="fa fa-sign-in" aria-hidden="true"></i></span>
+                        <span>Login</span>
+                    </a>
+                    <a class="navbar-item" routerLink="/me" *ngIf="isLoggedIn">
+                        <span class="icon"><i class="fa fa-user" aria-hidden="true"></i></span>
+                        <span>Profile</span>
+                    </a>
+                    <a class="navbar-item" routerLink="/settings" *ngIf="isLoggedIn">
+                        <span class="icon"><i class="fa fa-cog" aria-hidden="true"></i></span>
+                        <span>Settings</span>
+                    </a>
+                    <a class="navbar-item" (click)="logout()" *ngIf="isLoggedIn">
+                        <span class="icon"><i class="fa fa-sign-out" aria-hidden="true"></i></span>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </nav>

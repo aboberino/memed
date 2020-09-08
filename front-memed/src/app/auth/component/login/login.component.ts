@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenStorageService } from 'src/app/core/service/token-storage.service';
 import { AuthService } from '../../service/auth.service';
-import { AuthLoginInfo } from '../../model/login-info';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -9,53 +9,49 @@ import { AuthLoginInfo } from '../../model/login-info';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  form: any = {};
-  isLoggedIn = false;
-  isLoginFailed = false;
-  role: string = "";
-  errorMessage = '';
-  private loginInfo: AuthLoginInfo;
+
+  private formSubmitAttempt: boolean;
+  formLogin: any = {};
+  isLoggedIn: boolean;
+  errorMessage: string = null;
 
   constructor(
+    private formBuilder: FormBuilder, 
     private authService: AuthService, 
     private tokenStorage: TokenStorageService,
     ) { }
 
   ngOnInit(): void {
-    if (this.tokenStorage.getToken()) {
-      this.isLoggedIn = true;
-      this.role = this.tokenStorage.getAuthorities();
-    }
+    this.authService.isLoggedIn.subscribe(isLoggedIn => {
+      this.isLoggedIn = isLoggedIn;
+    })
+
+    this.formLogin = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(4)]]
+    });
   }
 
-  onSubmit() {
-    console.log(this.form);
-
-    this.loginInfo = new AuthLoginInfo(
-      this.form.username,
-      this.form.password);
-
-    this.authService.attemptAuth(this.loginInfo).subscribe(
-      data => {
-        this.tokenStorage.saveToken(data.accessToken);
-        this.tokenStorage.saveUsername(data.username);
-        this.tokenStorage.saveAuthorities(data.authorities);
-
-        this.isLoginFailed = false;
-        this.isLoggedIn = true;
-        this.role = this.tokenStorage.getAuthorities();
-        this.reloadPage();
-      },
-      error => {
-        console.log(error);
-        this.errorMessage = error.error.reason;
-        this.isLoginFailed = true;
-      }
+  isFieldInvalid(field: string) {
+    return (
+      (!this.formLogin.get(field).valid && this.formLogin.get(field).touched) ||
+      (this.formLogin.get(field).untouched && this.formSubmitAttempt)
     );
   }
 
-  reloadPage() {
-    window.location.reload();
+  onSubmit() {
+    if (this.formLogin.valid) {
+      this.authService.login(this.formLogin.value).subscribe(
+        res => {
+          console.log("Connected successfully");
+          this.errorMessage = null;
+        },
+        err => {
+          console.log(err);
+          this.errorMessage = err.error.reason;
+        }
+      );
+    }
+    this.formSubmitAttempt = true;
   }
-
 }

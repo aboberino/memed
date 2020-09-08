@@ -8,13 +8,13 @@ import { MemeService } from './service/meme.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TokenStorageService } from './service/token-storage.service';
 import { AuthModule } from '../auth/auth.module';
-
+import { httpInterceptorProviders } from './service/auth-interceptor';
 
 
 @NgModule({
   declarations: [
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
   ],
   imports: [
     CommonModule,
@@ -25,12 +25,13 @@ import { AuthModule } from '../auth/auth.module';
   exports: [
     HeaderComponent,
     FooterComponent,
-    MatSnackBarModule
+    MatSnackBarModule,
   ],
   providers: [
     UserService,
     MemeService,
-    TokenStorageService
+    httpInterceptorProviders,
+    TokenStorageService,
   ]
 })
 export class CoreModule { }

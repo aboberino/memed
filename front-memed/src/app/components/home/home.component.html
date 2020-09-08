@@ -18,7 +18,7 @@
 
 <section class="section">
     <div class="container" *ngIf="memes">
-        <div class="card" *ngFor="let meme of memes | async"> <!-- | async -->
+        <div class="card" *ngFor="let meme of memes"> <!-- | async -->
             <div class="card-image">
                 <figure class="image is-256x256">
                     <img [src]="meme.link" alt="Rare image of beautifull {{ meme.name }}">

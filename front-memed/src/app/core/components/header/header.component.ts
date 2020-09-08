@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { TokenStorageService } from '../../service/token-storage.service';
-import { Router } from '@angular/router';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { AuthService } from 'src/app/auth/service/auth.service';
+import { UserService } from '../../service/user.service';
 
 @Component({
   selector: 'app-header',
@@ -8,37 +8,32 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  private role: string;
-  private authority: string;
+
+  @ViewChild('navBurger') navBurger: ElementRef;
+  @ViewChild('navMenu') navMenu: ElementRef;
+  isLoggedIn: boolean;
+  currentUser: any;
 
   constructor(
-    private tokenStorage: TokenStorageService,
-    private router: Router
-    ) { }
+    private authService: AuthService,
+    private userService: UserService
+  ) { }
 
   ngOnInit() {
-    if (this.tokenStorage.getToken()) {
-      this.role = this.tokenStorage.getAuthorities();
-
-      if (this.role === 'ROLE_ADMIN') {
-        this.authority = 'admin';
-        return false;
-      } 
-      else if (this.role === 'ROLE_CONFIRMED') {
-        this.authority = 'pm';
-        return false;
-      }
-      this.authority = 'user';
-      return true;
-    }
-
-    console.log(this.role);
-    console.log(this.authority);
+    this.authService.isLoggedIn.subscribe(isLoggedIn => {
+      console.log("isLoggedIn : " + isLoggedIn);
+      this.isLoggedIn = isLoggedIn;
+    });
+    this.currentUser = this.userService.getCurrentUser();
   }
 
   logout() {
-    this.tokenStorage.signOut();
-    window.location.reload();
+    this.authService.logout();
+  }
+
+  toggleNavbar() {
+    this.navBurger.nativeElement.classList.toggle('is-active');
+    this.navMenu.nativeElement.classList.toggle('is-active');
   }
 
 }
