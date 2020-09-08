@@ -1,6 +1,4 @@
 const User = require('../service/User');
-// const config = require('../config/config');
-// const ROLES = config.ROLES;
 
 checkDuplicateUserNameOrEmail = (req, res, next) => {
 
@@ -10,7 +8,7 @@ checkDuplicateUserNameOrEmail = (req, res, next) => {
         }
 
         if (rows[0]) {
-            return res.status(400).send("Fail -> Username is already taken.");
+            return res.status(400).send({ reason: 'Username is already taken.' });
         }
 
         User.getUserByEmail(req.body.email, (err, rows) => {
@@ -19,7 +17,7 @@ checkDuplicateUserNameOrEmail = (req, res, next) => {
             }
 
             if (rows[0]) {
-				return res.status(400).send("Fail -> Email is already in use.");
+				return res.status(400).send({ reason: 'Email is already in use.' });
             }
             next();
         });

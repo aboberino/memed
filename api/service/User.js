@@ -7,6 +7,9 @@ var User = {
     getUser: function (username, callback) {
         return db.query(`SELECT * FROM user WHERE username='${username}'`, callback);
     },
+    getUserById: function (id, callback) {
+        return db.query(`SELECT * FROM user WHERE id='${id}'`, callback);
+    },
     getUserByEmail: function (email, callback) {
         return db.query(`SELECT * FROM user WHERE email='${email}'`, callback);
     },

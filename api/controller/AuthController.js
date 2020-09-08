@@ -8,7 +8,16 @@ var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 let User = require('../service/User');
 
-router.post('/signup', [verifySignUp.checkDuplicateUserNameOrEmail], function (req, res) {
+/**
+ * /auth/register
+ * Register user + log
+ */
+router.post('/register', [verifySignUp.checkDuplicateUserNameOrEmail], function (req, res) {
+
+    if (req.body.username == null || req.body.email == null || req.body.username == null)
+        return res.status(400).send({ reason: "Please enter good informations to register."});
+    
+
     User.createUser({
         username: req.body.username,
         email: req.body.email,
@@ -19,11 +28,61 @@ router.post('/signup', [verifySignUp.checkDuplicateUserNameOrEmail], function (r
         if (err) {
             return res.status(500).send({ reason: err.message });
         }
-        return res.send({ message: 'Registered successfully!' });
+        User.getUser(req.body.username, function (err, rows) {
+            let user = null;
+
+            if (err) {
+                return res.status(500).send({ reason: err.message });
+            }
+
+            if (rows[0]) {
+                user = rows[0];
+            }
+
+            //check if user exist
+            if (!user) {
+                return res.status(404).send({ reason: 'User not found.' });
+            }
+
+            // get user's role
+            User.getRoleById(user.id_role, (err, rows) => {
+                let role = null;
+                if (err) {
+                    return res.status(500).send({ reason: err.message });
+                }
+
+                if (rows[0]) {
+                    role = rows[0];
+                }
+
+                if (!role) {
+                    return res.status(404).send({ reason: 'Role not found.' });
+                }
+
+                let authorities = role.name.toUpperCase();
+
+                // create token
+                var token = jwt.sign({ id: user.id, role: authorities }, config.secret, {
+                    expiresIn: 86400 // expires in 24 hours
+                });
+
+                return res.status(200).send({
+                    auth: true,
+                    accessToken: token,
+                    user: { username: user.username, email: user.email, avatar_url: user.avatar_url },
+                    authorities: authorities
+                });
+            });
+
+        });
     });
 });
 
-router.post('/signin', function (req, res) {
+/**
+ * /auth/login
+ * Check credentials and generate token
+ */
+router.post('/login', function (req, res) {
 
     User.getUser(req.body.username, function (err, rows) {
         let user = null;
@@ -38,19 +97,14 @@ router.post('/signin', function (req, res) {
 
         //check if user exist
         if (!user) {
-            return res.status(404).send({ reason: 'User Not Found.' });
+            return res.status(404).send({ reason: 'User not found.' });
         }
 
         //check password validity
         let passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
         if (!passwordIsValid) {
-            return res.status(401).send({ auth: false, accessToken: null, reason: 'Invalid Password!' });
+            return res.status(401).send({ auth: false, accessToken: null, reason: 'Invalid password.' });
         }
-
-        // create token
-        var token = jwt.sign({ id: user.id }, config.secret, {
-            expiresIn: 86400 // expires in 24 hours
-        });
 
         // get user's role
         User.getRoleById(user.id_role, (err, rows) => {
@@ -63,19 +117,25 @@ router.post('/signin', function (req, res) {
                 role = rows[0];
             }
 
-            if (!role){
-                return res.status(404).send({ reason: 'Role Not Found.' });
+            if (!role) {
+                return res.status(404).send({ reason: 'Role not found.' });
             }
 
-            let authorities = "ROLE_" + role.name.toUpperCase();
+            let authorities = role.name.toUpperCase();
+
+            // create token
+            var token = jwt.sign({ id: user.id, role: authorities }, config.secret, {
+                expiresIn: 86400 // expires in 24 hours
+            });
+
             return res.status(200).send({
                 auth: true,
                 accessToken: token,
-                username: user.username,
+                user: { username: user.username, email: user.email, avatar_url: user.avatar_url },
                 authorities: authorities
             });
         });
-        
+
     });
 });
 
